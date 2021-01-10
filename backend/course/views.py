@@ -83,6 +83,7 @@ def course_join(request):
     if course.availabeTag[role] != 0:
         course_json = course.availabeTag
         course_json[data["role"]] = course.availabeTag[role] - 1
+        course.availabeTag["registered"][role].append(current_user.username)
         print(course.availabeTag[role])
         print(course.availabeTag["registered"][role])
     else:
