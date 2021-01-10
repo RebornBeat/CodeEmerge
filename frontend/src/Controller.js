@@ -13,9 +13,6 @@ export default class Controller extends Component {
 		if ( componentName != "Refresh") {
 			this.setState({component: componentName});
 		}
-		else {
-			this.setState({key: Math.random() })
-		}
 
 	}
 	
@@ -23,7 +20,7 @@ export default class Controller extends Component {
 		
 		return (
 			<>
-				{ this.state.component == "App" && <App parentCallback = {this.callbackFunction} key = {this.state.key} /> }
+				{ this.state.component == "App" && <App parentCallback = {this.callbackFunction} /> }
 				{ this.state.component == "Navbar-Portal" && <Portal parentCallback = {this.callbackFunction} /> }
 			</>
 		);
