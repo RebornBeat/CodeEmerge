@@ -73,6 +73,11 @@ def course_filter(request):
     return JsonResponse(course_dict)
 
 def course_join(request):
+    current_user = request.user
+    data = json.loads(request.body.decode('utf-8'))["data"]
+    print(current_user)
+    course = Course.objects.get(pk=data["id"])
+    print(course.title)
 #         for i in all_course:
 #             data = i.availabeTag
 #             for ii in filter_list:
