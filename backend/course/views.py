@@ -83,9 +83,11 @@ def course_join(request):
     if course.availabeTag[role] != 0:
         course_json = course.availabeTag
         course_json[data["role"]] = course.availabeTag[role] - 1
-        course.availabeTag["registered"][role].append(current_user.username)
-        print(course.availabeTag[role])
-        print(course.availabeTag["registered"][role])
+        if current_user.username not in course.availabeTag["registered"][role]:
+            course.availabeTag["registered"][role].append(current_user.username)
+            course.save()
+            print(course.availabeTag[role])
+            print(course.availabeTag["registered"][role])
     else:
         return JsonResponse({'details': "No Slots Available For Selected Role"})
 #         for i in all_course:
