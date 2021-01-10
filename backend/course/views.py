@@ -78,6 +78,7 @@ def course_join(request):
     print(current_user)
     course = Course.objects.get(pk=data["id"])
     print(course.availabeTag)
+    print(course.availabeTag[data["role"]])
 #         for i in all_course:
 #             data = i.availabeTag
 #             for ii in filter_list:
