@@ -79,6 +79,10 @@ def course_join(request):
     course = Course.objects.get(pk=data["id"])
     print(course.availabeTag)
     print(course.availabeTag[data["role"]])
+    if course.availabeTag[data["role"]] != 0:
+        pass
+    else:
+        return JsonResponse({'details': "No Slots Available For Selected Role"})
 #         for i in all_course:
 #             data = i.availabeTag
 #             for ii in filter_list:
