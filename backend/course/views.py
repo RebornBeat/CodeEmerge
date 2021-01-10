@@ -80,7 +80,7 @@ def course_join(request):
     print(course.availabeTag)
     print(course.availabeTag[data["role"]])
     if course.availabeTag[data["role"]] != 0:
-        pass
+        course_json = course.availabeTag
     else:
         return JsonResponse({'details': "No Slots Available For Selected Role"})
 #         for i in all_course:
