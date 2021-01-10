@@ -136,13 +136,11 @@ export default class Portal extends Component {
 	
 	sendData = (e) => {
 		this.props.parentCallback(e);
+		
 	}
 	
 	callbackFunction = (componentName) => {
 		
-		if ( componentName === "Accepted" ) {
-			this.sendData("App")
-		}
 		this.setState({component: componentName});
 	}
 	

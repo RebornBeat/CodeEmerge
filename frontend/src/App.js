@@ -202,10 +202,13 @@ export default class App extends Component {
 	super(props);
 	this.state = {role: "n/a", field: "n/a", stack: "n/a", language: "n/a", resData: "n/a", callback: "n/a", component: "App", uid: "n/a", selectedRole: "Designer" };
 	}
+	
+	sendData = (e) => {
+		this.props.parentCallback(e);
+	}
 		
 	getCookie = (name) => {
 		let cookieValue = null;
-		console.log(document.cookie)
 		if (document.cookie && document.cookie !== '') {
 			const cookies = document.cookie.split(';');
 			for (let i = 0; i < cookies.length; i++) {
@@ -273,14 +276,17 @@ export default class App extends Component {
 		if ( this.state.callback == "selected" ){
 			
 			let data = {id:this.state.uid, role: this.state.selectedRole};
-			console.log(data)
 			
 			// POST Role and Course ID
 			axios.defaults.headers.common["X-CSRFToken"] = csrftoken;
 			axios.post(`/join/`, { data }).then((res) =>  {
-				this.setState({callback: "post" })
+				this.setState({callback: "post"})
+				if ( res.data.details != "accepted" ) {
+					alert(res.data.details)
+				} else {
+					alert("You Have Succesfully Enrolled")
+				}
 			})
-			
 			
 		}
 	}
@@ -308,7 +314,7 @@ export default class App extends Component {
 					</div>
 					<div id="Course_Display_Wrapper">
 						{ ( this.state.resData != "n/a" && this.state.component == "App" ) && <CourseDisplay data = {this.state.resData} parentCallback = {this.callbackFunction} /> }
-						{ this.state.component == "SelectedCourse" && <CourseSelection arr = {selectionArr} data = {this.state.resData} id = {this.state.uid} parentCallback = {this.callbackFunction} /> }
+						{ this.state.component == "SelectedCourse" && <CourseSelection arr = {selectionArr} data = {this.state.resData} id = {this.state.uid} parentCallback = {this.callbackFunction} key = {this.state.enrolled} /> }
 					</div>
 				</div>
 			</>

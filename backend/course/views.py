@@ -69,35 +69,23 @@ def course_filter(request):
             all_course = Course.objects.filter(availabeTag__has_keys=filter_list)
             for i in all_course:
                 course_dict[i.pk] = { "title": i.title,  "filledSlot": i.filledSlot, "maxSlot": i.maxSlot, "startDate": i.startDate, "tags": i.availabeTag}
-                print(i.availabeTag)
     return JsonResponse(course_dict)
 
 def course_join(request):
     current_user = request.user
     data = json.loads(request.body.decode('utf-8'))["data"]
-    print(current_user)
     course = Course.objects.get(pk=data["id"])
-    print(course.availabeTag)
     role = data["role"]
-    print(course.availabeTag[role])
     if course.availabeTag[role] != 0:
         course_json = course.availabeTag
-        course_json[data["role"]] = course.availabeTag[role] - 1
         if current_user.username not in course.availabeTag["registered"][role]:
+            course_json[data["role"]] = course.availabeTag[role] - 1
             course.availabeTag["registered"][role].append(current_user.username)
+            course.filledSlot = course.filledSlot + 1
             course.save()
-            print(course.availabeTag[role])
-            print(course.availabeTag["registered"][role])
+            return JsonResponse({'details': "accepted"})
+        else:
+            return JsonResponse({'details': "User Already Enrolled"})
     else:
         return JsonResponse({'details': "No Slots Available For Selected Role"})
-#         for i in all_course:
-#             data = i.availabeTag
-#             for ii in filter_list:
-#                 try:
-#                     int(data[ii])
-#                 except:
-#                     continue
-#                 if int(data[ii]) != 0:
-#                     
-#             print(i.availabeTag, i.pk)
     return JsonResponse({'details': "accepted"})
