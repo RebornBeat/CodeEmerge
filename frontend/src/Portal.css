@@ -1,0 +1,73 @@
+#Login_Wrapper {
+	position: relative;
+	margin-left: 35%;
+	margin-top: 6%;
+	width: 30vw;
+	height: 60vh;
+	border: solid;
+	border-color: #933BBC;
+	text-align: center;
+	display: block;
+}
+
+#Login_Wrapper_Title {
+	position: relative;
+	text-decoration: underline;
+	top: 10%;
+}
+
+#Login_Input_Wrapper {
+	position: relative;
+	margin-top: 22.5%;
+}
+
+.Login_Input {
+	position: relative;
+	margin-top: 8%;
+}
+
+#Login_Wrapper_Submit{
+	position: relative;
+	margin-top: 25%;
+	margin-left: 40%;
+	width: 20%;
+	border: solid;
+	border-color: #933BBC;
+}
+
+#Login_Wrapper_Submit:hover {
+	color: white;
+	background-color: #933BBC;
+	cursor: pointer;
+}
+
+#Register_Link {
+		width: 30vw;
+		margin-left: 35%;
+		margin-top: .5%;
+		color: blue;
+}
+
+#Register_Link span:hover {
+	cursor: pointer;
+}
+
+#Register_Input_Wrapper {
+	position: relative;
+	margin-top: 20%;
+}
+
+#Register_Wrapper_Submit{
+	position: relative;
+	margin-top: 18%;
+	margin-left: 40%;
+	width: 20%;
+	border: solid;
+	border-color: #933BBC;
+}
+
+#Register_Wrapper_Submit:hover {
+	color: white;
+	background-color: #933BBC;
+	cursor: pointer;
+}
