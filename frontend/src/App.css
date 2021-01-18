@@ -149,6 +149,17 @@
 	height: 40%;
 	border: solid;
 	border-color: #933BBC;
+	display: flex;
+	align-items: center;
+}
+
+#Selected_Description_wrapper{
+	position: relative;
+	display: flex;
+	align-items: center;
+	left: 10%;
+	width: 80%;
+	height: 100%;
 }
 
 #Selected_Length_Wrapper {

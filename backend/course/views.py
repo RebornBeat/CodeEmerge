@@ -68,7 +68,7 @@ def course_filter(request):
         if len(filter_list) != 0:
             all_course = Course.objects.filter(availabeTag__has_keys=filter_list)
             for i in all_course:
-                course_dict[i.pk] = { "title": i.title,  "filledSlot": i.filledSlot, "maxSlot": i.maxSlot, "startDate": i.startDate, "tags": i.availabeTag}
+                course_dict[i.pk] = { "title": i.title,  "filledSlot": i.filledSlot, "maxSlot": i.maxSlot, "startDate": i.startDate, "tags": i.availabeTag, "description": i.description}
     return JsonResponse(course_dict)
 
 @csrf_exempt

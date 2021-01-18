@@ -15,7 +15,6 @@ export class CourseSelection extends Component {
 		//  Assign each role in props.registered to roleList, if in tags then add to filteredRole assuring that role is available.
 		let roleList = [ ]
 		let filteredRole = [ ]
-		console.log(this.props.data.tags)
 		let dataList = Object.entries(this.props.data.tags.registered).map(([key, value]) => {
 			
 			let userList = value.map((userKey) => {
@@ -70,13 +69,14 @@ export class CourseSelection extends Component {
 			
 		});
 		
-		
 		return (
 		
 			<>
 				<h2 id="Selected_Title">{this.props.data.title}</h2>
 				<div id="Selected_Description">
-					
+					<div id="Selected_Description_wrapper">
+					{this.props.data.description}
+					</div>
 				</div>
 				<div id="Selected_Length_Wrapper">
 					<img src={timer} alt="Deadline"/>
@@ -284,7 +284,6 @@ export default class App extends Component {
 					alert(res.data.details)
 				} else {
 					this.setState({callback: "refetch"})
-					alert("You Have Succesfully Enrolled")
 				}
 			})
 			
