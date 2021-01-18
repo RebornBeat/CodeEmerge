@@ -71,16 +71,25 @@ def course_filter(request):
                 course_dict[i.pk] = { "title": i.title,  "filledSlot": i.filledSlot, "maxSlot": i.maxSlot, "startDate": i.startDate, "tags": i.availabeTag}
     return JsonResponse(course_dict)
 
+@csrf_exempt
 def course_join(request):
-    current_user = request.user
+    current_user = request.user.username
     data = json.loads(request.body.decode('utf-8'))["data"]
     course = Course.objects.get(pk=data["id"])
     role = data["role"]
-    if course.availabeTag[role] != 0:
-        course_json = course.availabeTag
-        if current_user.username not in course.availabeTag["registered"][role]:
+    print(role)
+    print(course.title)
+    print(current_user)
+    if course.availabeTag[role] != 0: 
+        try:
+            User.objects.get(username=current_user)
+        except:
+            current_user = "randomUser6859"
+        if current_user not in course.availabeTag["registered"][role]:
+            course_json = course.availabeTag
+            print(current_user)
             course_json[data["role"]] = course.availabeTag[role] - 1
-            course.availabeTag["registered"][role].append(current_user.username)
+            course.availabeTag["registered"][role].append(current_user)
             course.filledSlot = course.filledSlot + 1
             course.save()
             return JsonResponse({'details': "accepted"})

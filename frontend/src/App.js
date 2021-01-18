@@ -15,7 +15,7 @@ export class CourseSelection extends Component {
 		//  Assign each role in props.registered to roleList, if in tags then add to filteredRole assuring that role is available.
 		let roleList = [ ]
 		let filteredRole = [ ]
-		
+		console.log(this.props.data.tags)
 		let dataList = Object.entries(this.props.data.tags.registered).map(([key, value]) => {
 			
 			let userList = value.map((userKey) => {
@@ -200,7 +200,7 @@ export class LanguageSelection extends Component {
 export default class App extends Component {
 	constructor(props) {
 	super(props);
-	this.state = {role: "n/a", field: "n/a", stack: "n/a", language: "n/a", resData: "n/a", callback: "n/a", component: "App", uid: "n/a", selectedRole: "Designer" };
+	this.state = {role: "n/a", field: "n/a", stack: "n/a", language: "n/a", resData: "n/a", callback: "n/a", component: "App", uid: "n/a", selectedRole: "Designer", reload: 0 };
 	}
 	
 	sendData = (e) => {
@@ -264,7 +264,7 @@ export default class App extends Component {
 		
 		let csrftoken = this.getCookie('csrftoken');
 		
-		if ( this.state.callback == "tags" ){
+		if ( this.state.callback === "tags" ){
 			let data = {role:this.state.role, field:this.state.field, stack:this.state.stack, language:this.state.language};
 			// if value != N/A make a FETCH post for all non N/A values
 			axios.defaults.headers.common["X-CSRFToken"] = csrftoken;
@@ -273,22 +273,36 @@ export default class App extends Component {
 			})
 		}
 			
-		if ( this.state.callback == "selected" ){
+		if ( this.state.callback === "selected" ){
 			
 			let data = {id:this.state.uid, role: this.state.selectedRole};
 			
 			// POST Role and Course ID
 			axios.defaults.headers.common["X-CSRFToken"] = csrftoken;
 			axios.post(`/join/`, { data }).then((res) =>  {
-				this.setState({callback: "post"})
 				if ( res.data.details != "accepted" ) {
 					alert(res.data.details)
 				} else {
+					this.setState({callback: "refetch"})
 					alert("You Have Succesfully Enrolled")
 				}
 			})
 			
 		}
+		
+		if ( this.state.callback === "refetch" ){
+			console.log("refetch", this.state.resData, this.state.callback, this.state.reload)
+			let data = {role:this.state.role, field:this.state.field, stack:this.state.stack, language:this.state.language};
+			axios.defaults.headers.common["X-CSRFToken"] = csrftoken;
+			axios.post(`/filter/`, { data }).then((res) =>  {
+				this.setState({ resData: res.data[this.state.uid], callback: "reload" })
+			})
+		}
+		
+		if ( this.state.callback === "reload" ){
+			this.setState({ reload: Math.random(), callback: "post" })
+		}
+	
 	}
   
 	render() {
@@ -309,12 +323,10 @@ export default class App extends Component {
 							<option value="developer">Developer</option>
 						</select>
 						{ (this.state.role === "designer" || this.state.role === "developer" ) && <FieldSelection parentCallback = {this.callbackFunction} key = {this.state.role}/> }
-						{ this.state.role === "developer" && <FullStackSelection parentCallback = {this.callbackFunction}  key = {this.state.field}/> }
-						{ ( this.state.role === "developer" && this.state.stack != "n/a" ) && <LanguageSelection parentCallback = {this.callbackFunction} key = {this.state.stack}/> }
 					</div>
 					<div id="Course_Display_Wrapper">
 						{ ( this.state.resData != "n/a" && this.state.component == "App" ) && <CourseDisplay data = {this.state.resData} parentCallback = {this.callbackFunction} /> }
-						{ this.state.component == "SelectedCourse" && <CourseSelection arr = {selectionArr} data = {this.state.resData} id = {this.state.uid} parentCallback = {this.callbackFunction} key = {this.state.enrolled} /> }
+						{ this.state.component === "SelectedCourse" && <CourseSelection arr = {selectionArr} data = {this.state.resData} id = {this.state.uid} parentCallback = {this.callbackFunction} key = {this.state.reload}/> }
 					</div>
 				</div>
 			</>
